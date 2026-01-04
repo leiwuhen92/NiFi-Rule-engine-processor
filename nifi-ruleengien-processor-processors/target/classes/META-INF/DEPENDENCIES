@@ -1,0 +1,121 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+nifi-ruleengien-processor-processors
+
+
+From: 'an unknown organization'
+  - curvesapi (https://github.com/virtuald/curvesapi) com.github.virtuald:curvesapi:jar:1.06
+    License: BSD License  (http://opensource.org/licenses/BSD-3-Clause)
+  - Gson (https://github.com/google/gson/gson) com.google.code.gson:gson:jar:2.7
+    License: Apache 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Json Path (https://github.com/jayway/JsonPath) com.jayway.jsonpath:json-path:jar:2.0.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'ANTLR' (http://www.antlr.org)
+  - ANTLR 3 Runtime (http://www.antlr.org) org.antlr:antlr-runtime:jar:3.5.2
+    License: BSD licence  (http://antlr.org/license.html)
+
+From: 'Apache NiFi Project' (http://nifi.apache.org/)
+  - rule-engine-reader (http://nifi.apache.org/nifi-nar-bundles/ruleengine-processor/rule-engine-reader) com.matrixbi:rule-engine-reader:jar:1.0
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+  - nifi-utils (http://nifi.apache.org/nifi-commons/nifi-utils) org.apache.nifi:nifi-utils:jar:1.2.0
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+
+From: 'Apache Software Foundation' (http://www.apache.org/)
+  - Apache POI - Common (https://poi.apache.org/) org.apache.poi:poi:jar:5.1.0
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache POI - API based on OPC and OOXML schemas (https://poi.apache.org/) org.apache.poi:poi-ooxml:jar:5.1.0
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache POI (https://poi.apache.org/) org.apache.poi:poi-ooxml-lite:jar:5.1.0
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Chemouni Uriel' (http://www.minidev.net/)
+  - ASM helper Minidev (http://asm/) net.minidev:asm:bundle:1.0.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - JSON Small and Fast Parser (http://json-smart/) net.minidev:json-smart:bundle:2.1.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Eclipse Foundation' (https://www.eclipse.org/)
+  - Eclipse Compiler for Java(TM) (https://projects.eclipse.org/projects/eclipse.jdt) org.eclipse.jdt:ecj:jar:3.33.0
+    License: Eclipse Public License - v 2.0  (https://www.eclipse.org/legal/epl-2.0/)
+
+From: 'JBoss by Red Hat' (http://www.jboss.org/)
+  - Drools :: base (http://www.drools.org/drools-build-parent/drools-base) org.drools:drools-base:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: Compiler (http://www.drools.org/drools-build-parent/drools-compiler) org.drools:drools-compiler:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: Core (http://www.drools.org/drools-build-parent/drools-core) org.drools:drools-core:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: Decision Tables (http://www.drools.org/drools-build-parent/drools-decisiontables) org.drools:drools-decisiontables:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: DRL AST (http://www.drools.org/drools-build-parent/drools-drl-ast) org.drools:drools-drl-ast:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: DRL :: Extensions (http://www.drools.org/drools-build-parent/drools-drl-extensions) org.drools:drools-drl-extensions:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: DRL :: Parser (http://www.drools.org/drools-build-parent/drools-drl-parser) org.drools:drools-drl-parser:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: ECJ (http://www.drools.org/drools-build-parent/drools-ecj) org.drools:drools-ecj:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: IO (http://www.drools.org/drools-build-parent/drools-io) org.drools:drools-io:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: KieSession (http://www.drools.org/drools-build-parent/drools-kiesession) org.drools:drools-kiesession:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: MVEL (http://www.drools.org/drools-build-parent/drools-mvel) org.drools:drools-mvel:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: Templates (http://www.drools.org/drools-build-parent/drools-templates) org.drools:drools-templates:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: Util (http://www.drools.org/drools-build-parent/drools-util) org.drools:drools-util:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: Wiring :: API (http://www.drools.org/drools-build-parent/drools-wiring/drools-wiring-api) org.drools:drools-wiring-api:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: Wiring :: Dynamic (http://www.drools.org/drools-build-parent/drools-wiring/drools-wiring-dynamic) org.drools:drools-wiring-dynamic:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Drools :: Wiring :: Static (http://www.drools.org/drools-build-parent/drools-wiring/drools-wiring-static) org.drools:drools-wiring-static:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - KIE :: Public API (http://www.drools.org/drools-build-parent/kie-api) org.kie:kie-api:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - KIE :: Internal (http://www.drools.org/drools-build-parent/kie-internal) org.kie:kie-internal:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - KIE :: Memory Compiler (http://www.drools.org/drools-build-parent/kie-memory-compiler) org.kie:kie-memory-compiler:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - KIE :: Util :: Maven Support (http://www.drools.org/drools-build-parent/kie-util/kie-util-maven-support) org.kie:kie-util-maven-support:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - KIE :: Util :: XML supposrt (http://www.drools.org/drools-build-parent/kie-util/kie-util-xml) org.kie:kie-util-xml:jar:8.44.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - mvel (http://mvel.codehaus.org/) org.mvel:mvel2:jar:2.5.0.Final
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'ObjectWeb' (http://www.objectweb.org/)
+  - ASM Core (http://asm.objectweb.org/asm/) asm:asm:jar:3.3.1
+    License: BSD  (http://asm.objectweb.org/license.html)
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Apache Commons Codec (http://commons.apache.org/proper/commons-codec/) commons-codec:commons-codec:jar:1.10
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Commons IO (http://commons.apache.org/proper/commons-io/) commons-io:commons-io:jar:2.5
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Commons Collections (http://commons.apache.org/proper/commons-collections/) org.apache.commons:commons-collections4:jar:4.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Commons Math (http://commons.apache.org/proper/commons-math/) org.apache.commons:commons-math3:jar:3.6.1
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'The Apache Software Foundation' (https://www.apache.org/)
+  - Apache Commons Compress (http://commons.apache.org/proper/commons-compress/) org.apache.commons:commons-compress:jar:1.13
+    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Log4j API (https://logging.apache.org/log4j/2.x/log4j-api/) org.apache.logging.log4j:log4j-api:jar:2.14.1
+    License: Apache License, Version 2.0  (https://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'XmlBeans' (https://xmlbeans.apache.org/)
+  - XmlBeans (https://xmlbeans.apache.org/) org.apache.xmlbeans:xmlbeans:jar:5.0.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Zaxxer.com' (https://github.com/brettwooldridge/SparseBitSet)
+  - SparseBitSet (https://github.com/brettwooldridge/SparseBitSet) com.zaxxer:SparseBitSet:jar:1.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+

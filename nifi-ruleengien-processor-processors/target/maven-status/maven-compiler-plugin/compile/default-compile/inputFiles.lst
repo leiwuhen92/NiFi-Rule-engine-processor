@@ -1,0 +1,4 @@
+/data/zq/NiFi-Rule-engine-processor/nifi-ruleengien-processor-processors/src/main/java/com/matrixbi/objects/BusinessObject.java
+/data/zq/NiFi-Rule-engine-processor/nifi-ruleengien-processor-processors/src/main/java/com/matrixbi/objects/BusinessObjectJson.java
+/data/zq/NiFi-Rule-engine-processor/nifi-ruleengien-processor-processors/src/main/java/com/matrixbi/objects/JsonBusinessObjects.java
+/data/zq/NiFi-Rule-engine-processor/nifi-ruleengien-processor-processors/src/main/java/com/matrixbi/nifi/processor/RuleEngineProcessor.java

@@ -32,6 +32,13 @@
         <module>nifi-ruleengien-processor-processors</module>
         <module>nifi-ruleengien-processor-nar</module>
     </modules>
+	
+	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<!-- 如果有 release 标签也修改 -->
+		<maven.compiler.release>17</maven.compiler.release>
+	</properties>
 
 
 	

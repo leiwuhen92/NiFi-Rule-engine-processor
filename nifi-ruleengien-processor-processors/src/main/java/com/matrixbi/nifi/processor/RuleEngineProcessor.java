@@ -153,8 +153,7 @@ public class RuleEngineProcessor extends AbstractProcessor {
                     
                     value.set(jsonBusinessObjects);
                 }catch(Exception ex){
-                    ex.printStackTrace();
-                    getLogger().error("Failed to read json string.");
+                    log.error("Failed to read json string", ex);
                 }
             }
         });
