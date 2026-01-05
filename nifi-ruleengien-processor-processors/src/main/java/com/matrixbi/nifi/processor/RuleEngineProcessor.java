@@ -52,6 +52,11 @@ import org.kie.api.definition.type.Description;
 import com.matrixbi.objects.JsonBusinessObjects;
 import com.matrixbi.utils.RuleEngine;
 
+import java.security.MessageDigest;
+import java.util.Base64;
+import java.nio.file.Path;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 
 @SideEffectFree
 @Tags({"Rule Engine","Processor","Drools","drl","MatrixBI"})
@@ -59,15 +64,22 @@ import com.matrixbi.utils.RuleEngine;
 @Description("This is rule engien")
 public class RuleEngineProcessor extends AbstractProcessor {
 
-    public static final PropertyDescriptor DRL_PATH = new PropertyDescriptor
-        .Builder().name("DRL file path")
-        .displayName("DRL file path")
-        .description("File ends with .drl or .xls that contines drools rules")
+//     public static final PropertyDescriptor DRL_PATH = new PropertyDescriptor
+//         .Builder().name("DRL file path")
+//         .displayName("DRL file path")
+//         .description("File ends with .drl or .xls that contines drools rules")
+//         .required(true)
+//         .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+//         .addValidator(StandardValidators.FILE_EXISTS_VALIDATOR)
+//         .build();
+
+    public static final PropertyDescriptor DRL_CONTENT = new PropertyDescriptor
+        .Builder().name("DRL Content")
+        .displayName("DRL Rule Content")
+        .description("Drools DRL rule content")
         .required(true)
         .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-        .addValidator(StandardValidators.FILE_EXISTS_VALIDATOR)
         .build();
-
 
     public static final Relationship SUCCESS = new Relationship.Builder()
         .name("success")
@@ -91,11 +103,51 @@ public class RuleEngineProcessor extends AbstractProcessor {
     private ComponentLog log;
     
     
-    private static RuleEngine getRuleEngineService(String filepath) {
+    private static RuleEngine getRuleEngineService_old(String filepath) {
     	if(!ruleEngineServices.containsKey(filepath))
     		ruleEngineServices.put(filepath, RuleEngine.createSession(filepath));
     	
     	return ruleEngineServices.get(filepath);
+    }
+
+    // 生成内容哈希（MD5/SHA-256）
+    private static String generateHash(String content) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(content.getBytes("UTF-8"));
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (Exception e) {
+            // 如果哈希失败，使用内容本身作为键（注意内容太长的情况）
+            return content.length() > 100 ? content.substring(0, 100) : content;
+        }
+    }
+
+    // 从字符串内容创建RuleEngine（需要RuleEngine支持）
+    private static RuleEngine createEngineFromContent(String drlContent) {
+        // 方法二：创建临时文件
+        try {
+            Path tempFile = Files.createTempFile("rules_", ".drl");
+            Files.write(tempFile, drlContent.getBytes());
+            RuleEngine engine = RuleEngine.createSession(tempFile.toString());
+            // 可以选择删除临时文件，或让RuleEngine读取后删除
+            return engine;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create temp DRL file", e);
+        }
+    }
+
+    private static RuleEngine getRuleEngineService(String drlContent) {
+        // 1. 生成DRL内容的哈希作为唯一标识
+        String contentHash = generateHash(drlContent);
+
+        // 2. 检查缓存
+        if(!ruleEngineServices.containsKey(contentHash)) {
+            // 3. 使用内容创建RuleEngine（假设RuleEngine支持从字符串创建）
+            RuleEngine engine = createEngineFromContent(drlContent);
+            ruleEngineServices.put(contentHash, engine);
+        }
+
+        return ruleEngineServices.get(contentHash);
     }
     
     @Override
@@ -104,7 +156,8 @@ public class RuleEngineProcessor extends AbstractProcessor {
     	log.debug("Init MatrixBI's RuleEngineProcesor");
 
     	final List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
-	        descriptors.add(DRL_PATH);
+	        // descriptors.add(DRL_PATH);
+	        descriptors.add(DRL_CONTENT);
         this.descriptors = Collections.unmodifiableList(descriptors);
 
         final Set<Relationship> relationships = new HashSet<Relationship>();
@@ -146,9 +199,13 @@ public class RuleEngineProcessor extends AbstractProcessor {
                     InputStreamReader flowfileInputStreamReader = new InputStreamReader(flowfileInputStream);
                     JsonBusinessObjects jsonBusinessObjects = new JsonBusinessObjects(flowfileInputStreamReader);
                     
-                    String drl_path = context.getProperty(DRL_PATH).getValue();
+                    // String drl_path = context.getProperty(DRL_PATH).getValue();
+                    String drl_content = context.getProperty(DRL_CONTENT).getValue();
                     while(jsonBusinessObjects.hasNext()) {
-                    	getRuleEngineService(drl_path).execute(jsonBusinessObjects.next());
+//                     	getRuleEngineService(drl_path).execute(jsonBusinessObjects.next());
+
+                    	// 使用DRL内容获取RuleEngine
+                    	getRuleEngineService(drl_content).execute(jsonBusinessObjects.next());
                     }
                     
                     value.set(jsonBusinessObjects);

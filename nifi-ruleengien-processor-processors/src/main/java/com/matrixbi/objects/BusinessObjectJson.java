@@ -5,8 +5,11 @@ import java.util.Arrays;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * Business object
  * 
@@ -14,11 +17,13 @@ import com.google.gson.JsonSyntaxException;
  *
  */
 public class BusinessObjectJson extends BusinessObject {
+
 	private static final long serialVersionUID = -856082492778433564L;
 	private JsonObject jObj;
 	private Boolean change = false;
 	private Gson gson;
 	private JsonBusinessObjects parent;
+	private static final Logger log = LoggerFactory.getLogger(BusinessObjectJson.class);
 	
 	
 	public BusinessObjectJson(JsonBusinessObjects jsonBusinessObjects, JsonElement je) {
@@ -30,28 +35,6 @@ public class BusinessObjectJson extends BusinessObject {
 		this.parent.trigger_change();
 		this.change = true;
 	}
-//	public BusinessObjectJson(InputStreamReader inputStreamReader) throws Exception {
-//		this.gson = new Gson();
-//
-//		JsonElement element = gson.fromJson(inputStreamReader, JsonElement.class);
-//
-//		if (element == null || !element.isJsonObject())
-//			throw new Exception("Cannot parse json from inputStreamReader  ");
-//
-//		this.jObj = (JsonObject) element;
-//
-//	}
-//
-//	public BusinessObjectJson(String json) throws Exception {
-//		this.gson = new Gson();
-//
-//		JsonElement element = gson.fromJson(json, JsonElement.class);
-//
-//		if (element == null || !element.isJsonObject())
-//			throw new Exception("Cannot parse json :  " + json);
-//
-//		this.jObj = (JsonObject) element;
-//	}
 
 	public String get(String path) {
 		return getPath(path).getAsString();
@@ -121,25 +104,49 @@ public class BusinessObjectJson extends BusinessObject {
 	}
 
 	private JsonElement getPath(String path) throws JsonSyntaxException {
-		if(path.isEmpty())
-			return this.jObj;
-		
-		JsonObject obj = this.jObj;
+    	if(path == null || path.isEmpty()) {
+            return this.jObj;
+        }
 
-		String[] seg = path.split("\\.");
-		for (String element : seg) {			
-			if (obj != null) {
-				JsonElement ele = obj.get(element);
-				
-				if (!ele.isJsonObject())
-					return ele;
-				else
-					obj = ele.getAsJsonObject();
-			} else {
-				return null;
-			}
-		}
+        JsonElement current = this.jObj;
+        String[] seg = path.split("\\.");
+        log.info("********************seg: {}", seg);
 
-		return obj;
+		for (String element : seg) {
+		    log.info("********************element: {}", element);
+		    if (current == null || current.isJsonNull()) {
+                return null;
+            }
+
+            // 处理数组
+            if (current.isJsonArray()) {
+                try {
+                    int index = Integer.parseInt(element);
+                    JsonArray arr = current.getAsJsonArray();
+                    if (index < 0 || index >= arr.size()) {
+                        return null;
+                    }
+                    current = arr.get(index);
+                } catch (NumberFormatException e) {
+                    return null;
+                }
+            }
+
+            // 处理对象
+            else if (current.isJsonObject()) {
+                JsonObject obj = current.getAsJsonObject();
+                if (!obj.has(element)) {
+                    return null;
+                }
+                current = obj.get(element);
+            }
+
+            // 既不是对象也不是数组，路径却还没结束
+            else {
+                return null;
+            }
+        }
+        log.info("********************current: {}",current);
+        return current;
 	}
 }
