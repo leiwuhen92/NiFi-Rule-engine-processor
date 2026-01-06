@@ -58,6 +58,20 @@ import java.nio.file.Path;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
+
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieFileSystem;
+import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.Message;
+import org.kie.api.io.ResourceType;
+
+import org.apache.nifi.components.Validator;
+import org.apache.nifi.components.ValidationContext;
+import org.apache.nifi.components.ValidationResult;
+
+import java.io.File;
+import java.util.List;
+
 @SideEffectFree
 @Tags({"Rule Engine","Processor","Drools","drl","MatrixBI"})
 @CapabilityDescription("Rule engine for nifi")
@@ -79,6 +93,7 @@ public class RuleEngineProcessor extends AbstractProcessor {
         .description("Drools DRL rule content")
         .required(true)
         .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+        .addValidator(new DrlSyntaxValidator())  // 使用自定义验证器
         .build();
 
     public static final Relationship SUCCESS = new Relationship.Builder()
@@ -91,23 +106,119 @@ public class RuleEngineProcessor extends AbstractProcessor {
         .description("Failed relationship")
         .build();
 
-    
+
     private List<PropertyDescriptor> descriptors;
 
     private Set<Relationship> relationships;
 
     private final BlockingQueue<byte[]> bufferQueue = new LinkedBlockingQueue<>();
-    
+
     private static HashMap<String,RuleEngine> ruleEngineServices = new HashMap<>();
-    
+
     private ComponentLog log;
-    
-    
+
+
     private static RuleEngine getRuleEngineService_old(String filepath) {
     	if(!ruleEngineServices.containsKey(filepath))
     		ruleEngineServices.put(filepath, RuleEngine.createSession(filepath));
-    	
+
     	return ruleEngineServices.get(filepath);
+    }
+
+    // 自定义DRL语法验证器
+    public static class DrlSyntaxValidator implements Validator {
+
+        @Override
+        public ValidationResult validate(String subject, String input, ValidationContext context) {
+            if (input == null || input.trim().isEmpty()) {
+                return new ValidationResult.Builder()
+                        .subject(subject)
+                        .input(input)
+                        .valid(false)
+                        .explanation("DRL内容不能为空")
+                        .build();
+            }
+
+            try {
+                CheckResult result = checkDrlContent(input);
+                if (result.isValid()) {
+                    return new ValidationResult.Builder()
+                            .subject(subject)
+                            .input(input)
+                            .valid(true)
+                            .explanation("DRL语法正确")
+                            .build();
+                } else {
+                    return new ValidationResult.Builder()
+                            .subject(subject)
+                            .input(input)
+                            .valid(false)
+                            .explanation("DRL语法错误: " + result.getErrorMessages())
+                            .build();
+                }
+            } catch (Exception e) {
+                return new ValidationResult.Builder()
+                        .subject(subject)
+                        .input(input)
+                        .valid(false)
+                        .explanation("验证过程中发生异常: " + e.getMessage())
+                        .build();
+            }
+        }
+
+        private CheckResult checkDrlContent(String drlContent) {
+            /* 利用Drools的编译机制，对DRL文件做一次离线编译，用来检查语法/规则是否合法。
+               它不执行规则，只做“能不能被Drools成功编译”的校验。
+               Drools 没有单独的“语法校验器”，只要规则能成功build，就说明语法+规则结构是正确的。
+
+               DRL 文件
+                 → 加入 KieFileSystem
+                 → 调用 KieBuilder.buildAll()
+                 → 查看编译错误
+            */
+            // 获取Drools核心入口
+            KieServices ks = KieServices.Factory.get();
+            // 创建虚拟规则文件系统
+            KieFileSystem kfs = ks.newKieFileSystem();
+
+            // 直接将DRL字符串内容写入虚拟文件
+            kfs.write("src/main/resources/rules.drl", ks.getResources().newByteArrayResource(drlContent.getBytes()).setResourceType(ResourceType.DRL));
+
+            // 编译规则
+            KieBuilder kieBuilder = ks.newKieBuilder(kfs).buildAll();
+            List<Message> messages = kieBuilder.getResults().getMessages();
+
+            List<String> errors = new ArrayList<>();
+            for (Message message : messages) {
+                errors.add(String.format("行%d列%d: %s",
+                    message.getLine(), message.getColumn(), message.getText()));
+            }
+
+            return new CheckResult(messages.isEmpty(), errors);
+        }
+    }
+
+    // 验证结果封装类
+    public static class CheckResult {
+        private final boolean valid;
+        private final List<String> errorMessages;
+
+        public CheckResult(boolean valid, List<String> errorMessages) {
+            this.valid = valid;
+            this.errorMessages = errorMessages != null ? errorMessages : new ArrayList<>();
+        }
+
+        public boolean isValid() {
+            return valid;
+        }
+
+        public List<String> getErrorMessages() {
+            return errorMessages;
+        }
+
+        public String getErrorMessagesAsString() {
+            return String.join("; ", errorMessages);
+        }
     }
 
     // 生成内容哈希（MD5/SHA-256）
