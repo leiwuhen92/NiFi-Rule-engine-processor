@@ -182,7 +182,7 @@ public class RuleEngineProcessor extends AbstractProcessor {
             KieFileSystem kfs = ks.newKieFileSystem();
 
             // 直接将DRL字符串内容写入虚拟文件
-            kfs.write("src/main/resources/rules.drl", ks.getResources().newByteArrayResource(drlContent.getBytes()).setResourceType(ResourceType.DRL));
+            kfs.write("src/main/resources/com/matrixbi/rules/rules.drl", ks.getResources().newByteArrayResource(drlContent.getBytes()).setResourceType(ResourceType.DRL));
 
             // 编译规则
             KieBuilder kieBuilder = ks.newKieBuilder(kfs).buildAll();
